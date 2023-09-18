@@ -24,13 +24,17 @@ var config = new ConfigurationBuilder()
 //obiekt do konfiguracji wstrzykiwanie zależności
 var serviceCollection = new ServiceCollection();
 
+//wskazujemy konkretny obiekt, który ma zostać dostarczony pod danym interfejsem
+serviceCollection.AddSingleton<IConfiguration>(config);
+
 //rejestracja typu DebugOutputService
 //serviceCollection.AddTransient<DebugOutputService>();
 
 //rejestracja typu IOutputService, pod którym kryje się DebugOutputService i ConsoleOutputService
 serviceCollection.AddTransient<IOutputService, DebugOutputService>();
+serviceCollection.AddTransient<IOutputService, ConsoleOutputService>();
 //ręczna konfiguracja tworzenia obiektu
-serviceCollection.AddTransient<IOutputService, ConsoleOutputService>(x => new ConsoleOutputService(x.GetServices<IFontService>()));
+//serviceCollection.AddTransient<IOutputService, ConsoleOutputService>(x => new ConsoleOutputService(x.GetServices<IFontService>()));
 //serviceCollection.AddTransient<IOutputService>(x => new ConsoleOutputService(new SubzeroFontService()));
 
 
@@ -81,6 +85,8 @@ using (var scope = serviceProvider.CreateScope())
         item.ShowText(text);
     }
 }
+
+Console.WriteLine(serviceProvider.GetService<IConfiguration>()["TMP"]);
 
 
 void ConfigurationDemo()

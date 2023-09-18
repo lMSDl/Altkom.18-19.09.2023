@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,14 +14,18 @@ namespace ConsoleApp.Services
 
         public ConsoleOutputService() { }
 
-        public ConsoleOutputService(IFontService fontService)
+        /*public ConsoleOutputService(IFontService fontService)
         {
             _fontService = fontService;
-        }
+        }*/
 
-        public ConsoleOutputService(IEnumerable<IFontService> fontServices)
+        /*public ConsoleOutputService(IEnumerable<IFontService> fontServices)
         {
             _fontService = fontServices.Skip(new Random().Next(0, fontServices.Count())).First();
+        }*/
+        public ConsoleOutputService(IEnumerable<IFontService> fontServices, IConfiguration configuration)
+        {
+            _fontService = fontServices.Skip(configuration.GetValue<int>("Count")).First();
         }
 
         public void ShowText(string text)
