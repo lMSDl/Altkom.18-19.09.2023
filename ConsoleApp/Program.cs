@@ -26,6 +26,16 @@ for (int i = 0; i < int.Parse(config["Count"]!); i++)
     Console.ReadLine();
 }
 
+Console.WriteLine($"{config["Greetings:Value"]} from {config["Greetings:Targets:From"]} to {config["Greetings:Targets:To"]}");
+
+var greetingsSection = config.GetSection("Greetings");
+Console.WriteLine($"{greetingsSection["Value"]} from {greetingsSection["Targets:From"]} to {greetingsSection["Targets:To"]}");
+
+
+//var targetsSection = config.GetSection("Greetings:Targets");
+var targetsSection = greetingsSection.GetSection("Targets");
+Console.WriteLine($"{greetingsSection["Value"]} from {targetsSection["From"]} to {targetsSection["To"]}");
+
 
 
 

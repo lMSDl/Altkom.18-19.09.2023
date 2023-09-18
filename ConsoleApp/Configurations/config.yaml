@@ -1,1 +1,6 @@
 HelloYaml: Yaml
+Greetings:
+  Value: Welcome
+  Targets:
+    From: Yaml
+    To: Eva

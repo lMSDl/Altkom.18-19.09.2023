@@ -1,4 +1,12 @@
 {
   "HelloJson": "Json",
-  "Count": 1
+  "Count": 1,
+
+  "Greetings": {
+    "Value": "Hello",
+    "Targets": {
+      "From": "Json",
+      "To": "Tom"
+    }
+  }
 }

@@ -1,4 +1,12 @@
 <configuration>
   <HelloXml>XML</HelloXml>
   <Count>2</Count>
+
+  <Greetings>
+    <Value>Hi</Value>
+    <Targets>
+      <From>XML</From>
+      <To>Edi</To>
+    </Targets>
+  </Greetings>
 </configuration>
