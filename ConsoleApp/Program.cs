@@ -14,6 +14,8 @@ var config = new ConfigurationBuilder()
     .AddXmlFile("Configurations/config.xml")
     //NetEscapades.Configuration.Yaml
     .AddYamlFile("Configurations/config.yaml")
+    //Microsoft.Extensions.Configuration.EnvironmentVariables
+    .AddEnvironmentVariables()
     .Build();
 
 
@@ -51,6 +53,10 @@ var greetings = config.GetSection(nameof(Greetings)).Get<Greetings>();
 
 Console.WriteLine($"{greetings!.Value} from {greetings.Targets!.From} to {greetings.Targets.To}");
 
+
+Console.WriteLine(config["TMP"]);
+Console.WriteLine(config["OneDrive"]);
+Console.WriteLine(config["ala"]);
 
 
 
