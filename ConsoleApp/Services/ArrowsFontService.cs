@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,9 @@ namespace ConsoleApp.Services
 {
     internal class ArrowsFontService : IFontService
     {
-        public ArrowsFontService()
+        public ArrowsFontService(ILogger<ArrowsFontService> logger)
         {
-            Console.WriteLine("Konstruktor ArrowsFontService");
+            logger.LogInformation("Konstruktor ArrowsFontService");
         }
         public string Render(string @string)
         {

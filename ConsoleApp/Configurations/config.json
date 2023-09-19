@@ -2,11 +2,28 @@
   "HelloJson": "Json",
   "Count": 1,
 
-  "Greetings": {
-    "Value": "Hello",
-    "Targets": {
-      "From": "Json",
-      "To": "Tom"
+    "Greetings": {
+        "Value": "Hello",
+        "Targets": {
+            "From": "Json",
+            "To": "Tom"
+        }
+    },
+
+    "Logging": {
+        "LogLevel": {
+            "Default": "Critical"
+        },
+        "EventLog": {
+            "LogLevel": {
+                "Default": "Error"
+            }
+        },
+        "Console": {
+            "LogLevel": {
+                "Default": "Trace"
+            },
+            "IncludeScopes": true
+        }
     }
-  }
 }

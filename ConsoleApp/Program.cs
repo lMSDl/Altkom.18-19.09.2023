@@ -1,7 +1,9 @@
-﻿using ConsoleApp.Configurations.Models;
+﻿using ConsoleApp;
+using ConsoleApp.Configurations.Models;
 using ConsoleApp.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 
 
@@ -46,6 +48,20 @@ serviceCollection.AddSingleton<IFontService, SubzeroFontService>();
 serviceCollection.AddScoped<IFontService, ArrowsFontService>();
 
 
+serviceCollection.AddLogging(options =>
+{
+    options.ClearProviders();
+    options
+    .AddConfiguration(config.GetSection("Logging"))
+    //.SetMinimumLevel(LogLevel.Warning)
+    .AddConsole(/*x => x.IncludeScopes = true*/)
+    .AddDebug()
+    .AddEventLog(x => x.SourceName = "MyApp");
+});
+
+serviceCollection.AddTransient<LoggerDemo>();
+
+
 //zbudowanie dostawcy usług
 var serviceProvider  = serviceCollection.BuildServiceProvider();
 
@@ -86,8 +102,13 @@ using (var scope = serviceProvider.CreateScope())
     }
 }
 
-Console.WriteLine(serviceProvider.GetService<IConfiguration>()["TMP"]);
+Console.WriteLine(serviceProvider.GetService<IConfiguration>()!["TMP"]);
 
+
+serviceProvider.GetService<ILogger<Program>>()!.LogError("Test");
+
+
+serviceProvider.GetService<LoggerDemo>()!.Work();
 
 void ConfigurationDemo()
 {

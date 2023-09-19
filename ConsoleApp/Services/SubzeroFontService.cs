@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,9 @@ namespace ConsoleApp.Services
 {
     internal class SubzeroFontService : IFontService
     {
-        public SubzeroFontService()
+        public SubzeroFontService(ILogger<SubzeroFontService> logger)
         {
-            Console.WriteLine("Konstruktor SubzeroFontService");
+            logger.LogInformation("Konstruktor SubzeroFontService");
         }
         public string Render(string @string)
         {
