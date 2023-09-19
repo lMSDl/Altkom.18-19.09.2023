@@ -1,58 +1,23 @@
+using WebApp.Middleware;
+
 var builder = WebApplication.CreateBuilder(args);
 
 //konfiguracja service collection
 
 
+//u¿ycie IMiddleware wymaga rejestracji 
+builder.Services.AddTransient<Use2Middleware>();
+builder.Services.AddTransient<HelloRunMiddleware>();
+
 
 var app = builder.Build();
 //konfiguracja aplikacji
 
+app.Use1();
+app.Map("/hello", HelloApp);
+//u¿ycie IMiddleware wymaga rejestracji 
+app.UseMiddleware<Use2Middleware>();
 
-
-app.Use(async (context, next) =>
-{
-    Console.WriteLine("Begin of Use1");
-
-
-    await next(context);
-
-
-    Console.WriteLine("End of Use1");
-});
-
-app.Map("/hello", helloApp =>
-{
-    helloApp.Use(async (context, next) =>
-    {
-        Console.WriteLine("Begin of HelloUse");
-
-
-        await next(context);
-
-
-        Console.WriteLine("End of HelloUse");
-    });
-
-    helloApp.Run(async context =>
-    {
-        Console.WriteLine("Begin of HelloRun");
-        await context.Response.WriteAsync("Hello o/");
-        Console.WriteLine("End of HelloRun");
-    });
-
-});
-
-
-app.Use(async (context, next) =>
-{
-    Console.WriteLine("Begin of Use2");
-
-
-    await next(context);
-
-
-    Console.WriteLine("End of Use2");
-});
 
 app.MapWhen(context => context.Request.Query.TryGetValue("name", out _), nameApp =>
 {
@@ -63,13 +28,7 @@ app.MapWhen(context => context.Request.Query.TryGetValue("name", out _), nameApp
 
 });
 
-app.Run(async context =>
-{
-    Console.WriteLine("Begin of Run");
-    await context.Response.WriteAsync("Under Construction");
-    Console.WriteLine("End of Run");
-});
-
+app.UseMiddleware<RunMiddleware>();
 
 
 if (app.Environment.IsDevelopment())
@@ -92,3 +51,19 @@ else/* if(app.Environment.IsEnvironment("alamakota"))*/
 
 
 app.Run();
+
+static void HelloApp(IApplicationBuilder helloApp)
+{
+        helloApp.Use(async (context, next) =>
+        {
+            Console.WriteLine("Begin of HelloUse");
+
+
+            await next(context);
+
+
+            Console.WriteLine("End of HelloUse");
+        });
+
+        helloApp.HelloRun();
+}
