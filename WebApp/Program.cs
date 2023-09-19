@@ -1,4 +1,5 @@
 using WebApp.Middleware;
+using WebApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,10 +9,15 @@ var builder = WebApplication.CreateBuilder(args);
 //u¿ycie IMiddleware wymaga rejestracji 
 builder.Services.AddTransient<Use2Middleware>();
 builder.Services.AddTransient<HelloRunMiddleware>();
+builder.Services.AddTransient<CounterMiddleware>();
+
+builder.Services.AddSingleton<CounterService>();
 
 
 var app = builder.Build();
 //konfiguracja aplikacji
+
+app.UseMiddleware<CounterMiddleware>();
 
 app.Use1();
 app.Map("/hello", HelloApp);
@@ -27,6 +33,8 @@ app.MapWhen(context => context.Request.Query.TryGetValue("name", out _), nameApp
     });
 
 });
+
+app.Map("/counter", counterApp => counterApp.UseMiddleware<ReadCounterMiddleware>());
 
 app.UseMiddleware<RunMiddleware>();
 
